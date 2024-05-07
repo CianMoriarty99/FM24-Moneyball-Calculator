@@ -1,0 +1,59 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload CSV File</title>
+</head>
+<body>
+    <h1>Upload CSV File</h1>
+
+    <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm">
+        <input type="file" name="csv_file" accept=".csv" required>
+        <select name="position" id="positionSelect">
+            <option value="CB">Center Back</option>
+            <option value="CM">Central Midfielder</option>
+            <option value="ST">Striker</option>
+            <!-- Add more options as needed -->
+        </select>
+        <br><br>
+        <label>Select Relevant Columns:</label><br>
+        {% for i in range(1, 6) %}
+            <select name="relevant_column_{{ i }}">
+                {% for column in ["Tck/90", "Hdr %", "Blk/90", "Clr/90", "Int/90", "Pres C/90", "OP-KP/90", "Ch C/90", "Cr C/90", "Pr passes/90", "Pas %", "xA/90", "ShT/90", "Drb/90", "NP-xG/90", "Conv %"] %}
+                    <option value="{{ column }}">{{ column }}</option>
+                {% endfor %}
+            </select>
+        {% endfor %}
+        <br><br>
+        <button type="submit">Calculate</button>
+    </form>
+    <script>
+        // Function to set default values for relevant columns based on selected position
+        function setDefaultValues() {
+            var positionSelect = document.getElementById("positionSelect");
+            var position = positionSelect.value;
+            
+            var relevantColumns = document.querySelectorAll('[name^="relevant_column_"]');
+            var defaultValues = {
+                "CB": ["Tck/90", "Hdr %", "Blk/90", "Clr/90", "Int/90"],
+                "CM": ["Pres C/90", "OP-KP/90", "Ch C/90", "Cr C/90", "Pr passes/90"],
+                "ST": ["xA/90", "ShT/90", "Drb/90", "NP-xG/90", "Conv %"]
+                // Add more positions and their respective default values as needed
+            };
+
+            relevantColumns.forEach(function(column, index) {
+                column.value = defaultValues[position][index];
+            });
+        }
+
+        // Add an event listener to call setDefaultValues() when position is changed
+        document.getElementById("positionSelect").addEventListener("change", setDefaultValues);
+        
+        // Call setDefaultValues() initially to set default values based on initial position
+        setDefaultValues();
+    </script>
+</body>
+</html>

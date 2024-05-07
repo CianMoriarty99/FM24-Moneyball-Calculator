@@ -1,0 +1,35 @@
+<!-- result.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moneyball Number Results</title>
+</head>
+<body>
+    <h1>Moneyball Number Results - 
+        {% for column in session['relevant_columns'] %}
+            {{ column }},
+        {% endfor %}
+        Compared for {{ session['position'] }}
+    </h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Moneyball Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for index, row in data.iterrows() %}
+                <tr>
+                    <td>{{ row['Name'] }}</td>
+                    <td>{{ row['Moneyball Number'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
